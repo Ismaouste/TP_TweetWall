@@ -1,4 +1,5 @@
 // Chargement des lib
+var Twit = require('twit');
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
@@ -6,6 +7,7 @@ const mongoose = require('mongoose');
 // add socket.io
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+
 
 // connect  DB
 mongoose.connect('mongodb://localhost:27017/tweetwall', {useNewUrlParser: true, useUnifiedTopology: true});
@@ -20,12 +22,14 @@ db.once('open', function() {
 
 // CREATE ROUTES
 app.get('/', function (req, res) {
-    res.sendFile( __dirname +  "/client/index.html" );
-
+    res.sendFile( __dirname +  "/client/static/index.html" );
+});
+app.get('/tweets', function (req, res) {
+    res.sendFile( __dirname +  "/client/static/tweets.html" );
 });
 
 // START server
 
 http.listen(3011, function () {
-    console.log('Example app listening on port 3040!')
+    console.log('Example app listening on port 3011!')
 })
