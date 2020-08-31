@@ -1,0 +1,31 @@
+{
+  "name": "tp_tweetwall",
+  "version": "1.0.0",
+  "description": "TweetWall made in JS with Express node usin Mongodb",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ismaouste/TP_TweetWall.git"
+  },
+  "keywords": [
+    "node.js",
+    "twitter",
+    "api",
+    "express",
+    "mongodb"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ismaouste/TP_TweetWall/issues"
+  },
+  "homepage": "https://github.com/Ismaouste/TP_TweetWall#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongoose": "^5.10.2",
+    "socket.io": "^2.3.0"
+  }
+}
