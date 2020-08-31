@@ -34,10 +34,10 @@ var watchlist = ['javascript'];
 
 // Twitter API credentials
 var T = new Twit({
-    consumer_key: '1cp0mey96pOKFScLqGRYRLUFy',
-    consumer_secret: 'cKyGaVWmZdPhYeY6C2jooeNsSF3mPp8VCY6p5gxV6ioh1d4zxn',
-    access_token: '14107059-RJdiElrn8F88TGD4VnKoyInlR7NENZuYSrUcwei3q',
-    access_token_secret: 'lrlY2bZ3ch15K9lbjhOxmplBp0jdckDK7kUt0hLfHH7x2',
+    consumer_key: 'XX',
+    consumer_secret: 'XX',
+    access_token: 'X-XX',
+    access_token_secret: 'XX',
     timeout_ms: 60 * 1000,  // optional HTTP rxequest timeout to apply to all requests.
 });
 
