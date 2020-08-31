@@ -12,7 +12,7 @@ Having installed `node.js`, `MongoDb`, `Git` and/or an `IDE` workspace with cons
 
 
 **Client CDN**  
-`Materialize CSS` for beautiful client.
+`Materialize CSS+Js` for beautiful client.
 
 **Clone the project on your working station**  
 `git clone https://github.com/Ismaouste/TP_TweetWall`

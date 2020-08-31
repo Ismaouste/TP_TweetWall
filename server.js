@@ -4,6 +4,7 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 
+
 // add socket.io
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
@@ -35,22 +36,49 @@ var watchlist = ['javascript'];
 var T = new Twit({
     consumer_key: '1cp0mey96pOKFScLqGRYRLUFy',
     consumer_secret: 'cKyGaVWmZdPhYeY6C2jooeNsSF3mPp8VCY6p5gxV6ioh1d4zxn',
-    access_token: '14107059-RJdiElrn8F88TGD4VnKoyInlR7NENZuYSrUcwei3q%3DXiAiOraDfeEgsoUcyjFRLug2MGs20Hd3TBk9PysN39QkDCmaPo',
+    access_token: '14107059-RJdiElrn8F88TGD4VnKoyInlR7NENZuYSrUcwei3q',
     access_token_secret: 'lrlY2bZ3ch15K9lbjhOxmplBp0jdckDK7kUt0hLfHH7x2',
-    timeout_ms: 60 * 1000,  // optional HTTP request timeout to apply to all requests.
+    timeout_ms: 60 * 1000,  // optional HTTP rxequest timeout to apply to all requests.
 });
 
 
-//Using Twit to import twitter data
-io.sockets.on('connection', function (socket) {
+// //Using Twit to import twitter data
+// io.sockets.on('connection', function (socket) {
+//
+//     var stream = T.stream('statuses/filter', {track: watchlist});
+//
+//     stream.on('tweet', function (tweet) {
+//         // when a new Tweet pops into the stream, we get some data from the Tweet object.
+//         io.sockets.emit('stream', tweet.user.profile_image_url + ","
+//             + tweet.created_at + "," + tweet.id + "," + tweet.text
+//             + ", @" + tweet.user.screen_name);
+//     });
+// });
 
-    var stream = T.stream('statuses/filter', {track: watchlist});
+//
+//  stream a sample of public statuses
+//
+var stream = T.stream('statuses/sample')
 
-    stream.on('tweet', function (tweet) {
-        // when a new Tweet pops into the stream, we get some data from the Tweet object.
-        io.sockets.emit('stream', tweet.user.profile_image_url + ","
-            + tweet.created_at + "," + tweet.id + "," + tweet.text
-            + ", @" + tweet.user.screen_name);
-    });
-});
+stream.on('tweet', function (tweet) {
+    console.log(tweet)
+})
 
+//
+//  filter the twitter public stream by the word 'javascript'.
+//
+var stream = T.stream('statuses/filter', { track: 'javascript' })
+
+stream.on('tweet', function (tweet) {
+    console.log(tweet)
+})
+
+//
+// filter the public stream by the latitude/longitude bounded box of Nancy
+//
+var nancy = [ '5.75', '48.48', '6.5', '48.86' ]
+var stream = T.stream('statuses/filter', { locations: nancy })
+
+stream.on('tweet', function (tweet) {
+    console.log(tweet)
+})
