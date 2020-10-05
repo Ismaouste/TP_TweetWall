@@ -16,8 +16,6 @@ var path = require('path');
 var Sensor = require('./models/sensors.js');
 
 
-
-
 const mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/capteurs', {
     useNewUrlParser: true,
@@ -25,24 +23,24 @@ mongoose.connect('mongodb://localhost:27017/capteurs', {
 });
 
 // viewed at http://localhost:8080
-app.get('/', function(req, res) {
+app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + '/client/index.html'));
 });
-app.get('/tweets', function(req, res) {
+app.get('/tweets', function (req, res) {
     res.sendFile(path.join(__dirname + '/client/tweets.html'));
 });
 
-app.get('/dataviz', function(req, res) {
+app.get('/dataviz', function (req, res) {
     res.sendFile(path.join(__dirname + '/client/dataviz.html'));
 });
-app.get('/tweets.js', function(req, res) {
+app.get('/tweets.js', function (req, res) {
     res.sendFile(path.join(__dirname + '/client/source/js/tweets.js'));
 });
 
-app.get('/api/capteurs/:stype', function(req, res) {
+app.get('/api/capteurs/:stype', function (req, res) {
 
 
-    Sensor.find({"sensor_type" : req.params.stype}).exec(function(err, sensorList) {
+    Sensor.find({"sensor_type": req.params.stype}).exec(function (err, sensorList) {
         if (err) {
             console.log(err);
         }
@@ -66,14 +64,13 @@ stream.on('tweet', (tweet) => {
     });
 });
 
-stream.on('error', function(error) {
+stream.on('error', function (error) {
     throw error;
 });
 
 io.on('connection', (socket) => {
     console.log('a user connected');
 });
-
 
 
 http.listen(3000, () => {
