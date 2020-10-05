@@ -22,4 +22,4 @@ Having installed `node.js`, `MongoDb`, `Git` and/or an `IDE` workspace with cons
 `npm install`  
 `nodemon server.js`
 
-**Check it at `http://localhost:3011/`**
+**Check it at `http://localhost:3000/`**
