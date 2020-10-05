@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TP Eval</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+<body>
+<nav>
+    <div class="nav-wrapper black">
+        <a href="/" class="brand-logo">Eval JS</a>
+        <ul id="nav-mobile" class="right">
+            <li><a href="/tweets">1. Tweets</a></li>
+            <li><a href="/dataviz">2. Dataviz</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+
+        <div class="row">
+            <div class="col s12 m6">
+                <div class="card blue-grey darken-1">
+                    <div class="card-content white-text">
+                        <span class="card-title">Bienvenue,</span>
+                        <p>Notre modeste plateforme vous propose de consulter les tweets et visualiser les indicateurs
+                            de température et d'humidité de vos capteurs.</p>
+                    </div>
+                    <div class="card-action">
+                        <a href="/tweets">Les Tweets</a>
+                        <a href="/dataviz">Data Visualization</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var socket = io();
+    socket.on('colorChange', function (msg) {
+        console.log(msg);
+        document.getElementById("colorWrap").style.backgroundColor = msg.newcolor;
+    });
+    socket.on('tempChange', function (msg) {
+        console.log(msg);
+        // document.getElementById("colorWrap").style.backgroundColor = msg.newcolor;
+    });
+    socket.on('humChange', function (msg) {
+        console.log(msg);
+        // document.getElementById("colorWrap").style.backgroundColor = msg.newcolor;
+    });
+</script>
+</body>
+</html>

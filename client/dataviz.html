@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>#IoT - last tweets</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+</head>
+<body>
+<nav>
+    <div class="nav-wrapper black">
+        <a href="/" class="brand-logo">Eval JS</a>
+        <ul id="nav-mobile" class="right">
+            <li><a href="/tweets">1. Tweets</a></li>
+            <li><a href="/dataviz">2. Dataviz</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <h1>hello viz</h1>
+
+        <div class="col s12 m12">
+            <div class="card">
+                <div class="card-content">
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<canvas id="myChart"></canvas>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var socket = io();
+    fetch('./api/capteurs/Hum')
+        .then(
+            function (response) {
+                if (response.status !== 200) {
+                    console.log('Looks like there was a problem. Status Code: ' +
+                        response.status);
+                    return;
+                }
+
+                // Examine the text in the response
+                response.json().then(function (data) {
+                    console.log(data);
+                    var xs = [];
+                    var ys = [];
+                    data.forEach(function (valeurs) {
+                        xs.push(valeurs.timestamp);
+                        ys.push(valeurs.value);
+                    })
+                    var chart = new Chart(ctx, {
+                        // The type of chart we want to create
+                        type: 'line',
+                        // The data for our dataset
+                        data: {
+                            labels: xs,
+                            datasets: [{
+                                label: 'My First dataset',
+                                backgroundColor: 'rgb(255, 99, 132)',
+                                borderColor: 'rgb(255, 99, 132)',
+                                data: ys
+                            }]
+                        },
+                        // Configuration options go here
+                        options: {}
+                    });
+                    console.log(chart);
+
+                    socket.on('humChange', function (msg) {
+                        console.log(msg);
+                        chart.data.labels.push(Date.now());
+                        chart.data.data.push(msg.newHum);
+                        chart.update();
+                        // document.getElementById("colorWrap").style.backgroundColor = msg.newcolor;
+                    });
+                });
+            }
+        )
+        .catch(function (err) {
+            console.log('Fetch Error :-S', err);
+        });
+
+
+    socket.on('colorChange', function (msg) {
+        console.log(msg);
+        document.getElementById("colorWrap").style.backgroundColor = msg.newcolor;
+    });
+    socket.on('tempChange', function (msg) {
+        console.log(msg);
+        // document.getElementById("colorWrap").style.backgroundColor = msg.newcolor;
+    });
+
+</script>
+</body>
+</html>

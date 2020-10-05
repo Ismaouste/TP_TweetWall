@@ -1,84 +1,81 @@
-// Chargement des lib
-var Twit = require('twit');
-const express = require('express');
-const app = express();
-const mongoose = require('mongoose');
+const Twit = require('twit');
 
 
-// add socket.io
+let Tweet = new Twit({
+    consumer_key: '1cp0mey96pOKFScLqGRYRLUFy',
+    consumer_secret: 'cKyGaVWmZdPhYeY6C2jooeNsSF3mPp8VCY6p5gxV6ioh1d4zxn',
+    access_token: '14107059-YPlTtRxFQRi295lKREbf7AB7KTJ2vyNMgYMHxxXvH',
+    access_token_secret: 'bHjpFqzSVjfOU9iwSKNCkojZfqyOqYF2VaS8tPirw3enm',
+});
+
+var express = require('express');
+var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+var path = require('path');
+var Sensor = require('./models/sensors.js');
 
-// connect  DB
-mongoose.connect('mongodb://localhost:27017/tweetwall', {useNewUrlParser: true, useUnifiedTopology: true});
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function () {
-    console.log('db connected on port 27017');
+
+
+
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost:27017/capteurs', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
 });
 
-// CREATE ROUTES
-app.get('/', function (req, res) {
-    res.sendFile(__dirname + "/client/static/index.html");
+// viewed at http://localhost:8080
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/client/index.html'));
 });
-app.get('/tweets', function (req, res) {
-    res.sendFile(__dirname + "/client/static/tweets.html");
-});
-
-// START server
-http.listen(3011, function () {
-    console.log('Example app listening on port 3011!')
-})
-// Your keywords to search within the Tweet Stream
-var watchlist = ['javascript'];
-
-// Twitter API credentials
-var T = new Twit({
-    consumer_key: 'XX',
-    consumer_secret: 'XX',
-    access_token: 'X-XX',
-    access_token_secret: 'XX',
-    timeout_ms: 60 * 1000,  // optional HTTP rxequest timeout to apply to all requests.
+app.get('/tweets', function(req, res) {
+    res.sendFile(path.join(__dirname + '/client/tweets.html'));
 });
 
+app.get('/dataviz', function(req, res) {
+    res.sendFile(path.join(__dirname + '/client/dataviz.html'));
+});
+app.get('/tweets.js', function(req, res) {
+    res.sendFile(path.join(__dirname + '/client/source/js/tweets.js'));
+});
 
-// //Using Twit to import twitter data
-// io.sockets.on('connection', function (socket) {
-//
-//     var stream = T.stream('statuses/filter', {track: watchlist});
-//
-//     stream.on('tweet', function (tweet) {
-//         // when a new Tweet pops into the stream, we get some data from the Tweet object.
-//         io.sockets.emit('stream', tweet.user.profile_image_url + ","
-//             + tweet.created_at + "," + tweet.id + "," + tweet.text
-//             + ", @" + tweet.user.screen_name);
-//     });
-// });
+app.get('/api/capteurs/:stype', function(req, res) {
 
-//
-//  stream a sample of public statuses
-//
-var stream = T.stream('statuses/sample')
 
-stream.on('tweet', function (tweet) {
-    console.log(tweet)
-})
+    Sensor.find({"sensor_type" : req.params.stype}).exec(function(err, sensorList) {
+        if (err) {
+            console.log(err);
+        }
+        console.log(sensorList);
+        res.json(sensorList);
 
-//
-//  filter the twitter public stream by the word 'javascript'.
-//
-var stream = T.stream('statuses/filter', { track: 'javascript' })
+    });
 
-stream.on('tweet', function (tweet) {
-    console.log(tweet)
-})
 
-//
-// filter the public stream by the latitude/longitude bounded box of Nancy
-//
-var nancy = [ '5.75', '48.48', '6.5', '48.86' ]
-var stream = T.stream('statuses/filter', { locations: nancy })
+});
 
-stream.on('tweet', function (tweet) {
-    console.log(tweet)
-})
+//- Paramètres de recherche : "javascript" et "iot"
+let stream = Tweet.stream('statuses/filter', {
+    track: ['#javascript, #iot']
+});
+
+//- Ecoute le stream socket.io
+stream.on('tweet', (tweet) => {
+    io.emit('tweet', {
+        'tweet': tweet
+    });
+});
+
+stream.on('error', function(error) {
+    throw error;
+});
+
+io.on('connection', (socket) => {
+    console.log('a user connected');
+});
+
+
+
+http.listen(3000, () => {
+    console.log('listening on *:3000');
+});

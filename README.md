@@ -7,12 +7,12 @@ Having installed `node.js`, `MongoDb`, `Git` and/or an `IDE` workspace with cons
 `Express` for web app framework.  
 `Mongoose` for managing Mongdb.  
 `Socket.io` for real time tweets actualization.  
-`Twit` for easier twitter API manipulations.  
+`Twitter` for easier twitter API manipulations.  
 `Nodemon` for improved server management and monitoring.
-
 
 **Client CDN**  
 `Materialize CSS+Js` for beautiful client.
+`Chart.js` for perfect chart.
 
 **Clone the project on your working station**  
 `git clone https://github.com/Ismaouste/TP_TweetWall`
