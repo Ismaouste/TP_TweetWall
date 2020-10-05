@@ -11,9 +11,9 @@ Having installed `node.js`, `MongoDb`, `Git` and/or an `IDE` workspace with cons
 `Nodemon` for improved server management and monitoring.
 
 **Client CDN**  
-`Materialize CSS+Js` for beautiful client.
-`Chart.js` for perfect chart.
-`Widget.js` for official twitter widget.
+`Materialize CSS+Js` for beautiful client.  
+`Chart.js` for perfect chart.   
+`Widget.js` for official twitter widget.    
 
 **Clone the project on your working station**  
 `git clone https://github.com/Ismaouste/TP_TweetWall`
